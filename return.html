@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Return Book</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📚 Library Management
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('history') }}">
+            History
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="detail-card">
+
+        <h1>Return Book</h1>
+
+
+        <h2>
+            {{ issue.title }}
+        </h2>
+
+
+        <p>
+
+            <strong>Author:</strong>
+
+            {{ issue.author }}
+
+        </p>
+
+
+        <p>
+
+            <strong>Issue Date:</strong>
+
+            {{ issue.issue_date }}
+
+        </p>
+
+
+        <p>
+
+            <strong>Due Date:</strong>
+
+            {{ issue.due_date }}
+
+        </p>
+
+
+        <div class="info-box">
+
+            <p>
+                Fine is calculated automatically.
+            </p>
+
+            <p>
+                ₹5 per late day.
+            </p>
+
+        </div>
+
+
+        <form method="POST">
+
+            <button type="submit">
+
+                Confirm Return
+
+            </button>
+
+
+            <a class="cancel-btn"
+               href="{{ url_for('dashboard') }}">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Books</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📚 Library Management
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('books') }}">
+            Books
+        </a>
+
+        <a href="{{ url_for('history') }}">
+            History
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <h1>Library Books</h1>
+
+
+    <!-- SEARCH -->
+
+    <form class="search-form"
+          method="GET"
+          action="{{ url_for('books') }}">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by title, author or category"
+            value="{{ search }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    {% if session["role"] == "librarian" %}
+
+    <!-- ADD BOOK -->
+
+    <div class="form-card">
+
+        <h2>Add New Book</h2>
+
+        <form method="POST"
+              action="{{ url_for('add_book') }}">
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Book title"
+                required
+            >
+
+            <input
+                type="text"
+                name="author"
+                placeholder="Author"
+                required
+            >
+
+            <input
+                type="text"
+                name="category"
+                placeholder="Category"
+            >
+
+            <input
+                type="text"
+                name="isbn"
+                placeholder="ISBN"
+            >
+
+            <input
+                type="number"
+                name="total_copies"
+                placeholder="Total copies"
+                min="1"
+                required
+            >
+
+            <button type="submit">
+                Add Book
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- BOOK TABLE -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Title</th>
+
+                    <th>Author</th>
+
+                    <th>Category</th>
+
+                    <th>ISBN</th>
+
+                    <th>Total</th>
+
+                    <th>Available</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for book in books %}
+
+                <tr>
+
+                    <td>
+                        {{ book.id }}
+                    </td>
+
+                    <td>
+                        {{ book.title }}
+                    </td>
+
+                    <td>
+                        {{ book.author }}
+                    </td>
+
+                    <td>
+                        {{ book.category }}
+                    </td>
+
+                    <td>
+                        {{ book.isbn }}
+                    </td>
+
+                    <td>
+                        {{ book.total_copies }}
+                    </td>
+
+                    <td>
+
+                        {% if book.available_copies > 0 %}
+
+                            <span class="available">
+                                {{ book.available_copies }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="unavailable">
+                                0
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if book.available_copies > 0 %}
+
+                            <a class="btn-small"
+                               href="{{ url_for('issue_book', book_id=book.id) }}">
+
+                                Issue
+
+                            </a>
+
+                        {% else %}
+
+                            <a class="btn-small warning-btn"
+                               href="{{ url_for('issue_book', book_id=book.id) }}">
+
+                                Join Queue
+
+                            </a>
+
+                        {% endif %}
+
+
+                        {% if session["role"] == "librarian" %}
+
+                            <a class="btn-small danger-btn"
+                               href="{{ url_for('delete_book', book_id=book.id) }}"
+                               onclick="return confirm('Delete this book?')">
+
+                                Delete
+
+                            </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="8">
+
+                        No books found.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

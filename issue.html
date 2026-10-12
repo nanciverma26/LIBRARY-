@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Issue Book</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📚 Library Management
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('books') }}">
+            Books
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="detail-card">
+
+        <h1>Issue Book</h1>
+
+        <h2>
+            {{ book.title }}
+        </h2>
+
+        <p>
+            <strong>Author:</strong>
+            {{ book.author }}
+        </p>
+
+        <p>
+            <strong>Category:</strong>
+            {{ book.category }}
+        </p>
+
+        <p>
+            <strong>Available Copies:</strong>
+            {{ book.available_copies }}
+        </p>
+
+
+        {% if book.available_copies > 0 %}
+
+            <div class="info-box">
+
+                <p>
+                    Borrowing period: <strong>14 days</strong>
+                </p>
+
+                <p>
+                    Fine after due date:
+                    <strong>₹5 per day</strong>
+                </p>
+
+            </div>
+
+
+            <form method="POST">
+
+                <button type="submit">
+                    Confirm Issue
+                </button>
+
+                <a class="cancel-btn"
+                   href="{{ url_for('books') }}">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        {% else %}
+
+            <div class="info-box warning">
+
+                <p>
+                    This book is currently unavailable.
+                </p>
+
+                <p>
+                    You will be added to the waiting queue.
+                </p>
+
+            </div>
+
+
+            <form method="POST">
+
+                <button type="submit"
+                        class="warning-btn">
+
+                    Join Waiting Queue
+
+                </button>
+
+                <a class="cancel-btn"
+                   href="{{ url_for('books') }}">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

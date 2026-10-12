@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        📚 Library Management
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('books') }}">
+            Books
+        </a>
+
+        <a href="{{ url_for('history') }}">
+            History
+        </a>
+
+        <!-- Queue route remains same, only display name changed -->
+        <a href="{{ url_for('queue_view') }}">
+            Waiting List
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <section class="welcome">
+
+        <h1>
+            Welcome, {{ session["name"] }} 👋
+        </h1>
+
+        <p>
+            Role: {{ session["role"]|capitalize }}
+        </p>
+
+    </section>
+
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <h3>Total Books</h3>
+
+            <p>
+                {{ total_books }}
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Available Books</h3>
+
+            <p>
+                {{ available_books }}
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>My Issued Books</h3>
+
+            <p>
+                {{ issued_books }}
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Total Fine</h3>
+
+            <p>
+                ₹{{ total_fine }}
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="quick-actions">
+
+        <h2>Quick Actions</h2>
+
+        <div class="action-grid">
+
+
+            <a class="action-card"
+               href="{{ url_for('books') }}">
+
+                📖
+
+                <span>
+                    Search Books
+                </span>
+
+            </a>
+
+
+            <a class="action-card"
+               href="{{ url_for('history') }}">
+
+                📋
+
+                <span>
+                    Issue History
+                </span>
+
+            </a>
+
+
+            <a class="action-card"
+               href="{{ url_for('queue_view') }}">
+
+                ⏳
+
+                <span>
+                    Waiting List
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% for category, message in messages %}
+
+            <div class="alert {{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+
+</main>
+
+</body>
+
+</html>
